@@ -16,6 +16,7 @@ module.exports = {
     "no-console": "off",
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
+    "react/forbid-prop-types": "off",
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [

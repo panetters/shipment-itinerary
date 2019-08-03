@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { addStopToItinerary } from '../../store';
+import { attemptSubmitNewStop } from '../../store';
 
 import { TextInput } from '../library/inputs';
 import { PrimaryButton } from '../library/buttons';
@@ -31,9 +31,10 @@ class ItineraryForm extends React.Component {
 
   submitStop = () => {
     const { name, address } = this.state;
-    const { addStop } = this.props;
+    const { submitStop } = this.props;
 
-    addStop({ name, address });
+    submitStop(name, address);
+
     this.setState({
       name: '',
       address: '',
@@ -53,13 +54,13 @@ class ItineraryForm extends React.Component {
 }
 
 ItineraryForm.propTypes = {
-  addStop: PropTypes.func,
+  submitStop: PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addStop: stop => {
-      dispatch(addStopToItinerary(stop));
+    submitStop: (name, address) => {
+      dispatch(attemptSubmitNewStop(name, address));
     },
   };
 };
