@@ -1,19 +1,9 @@
 import React from 'react';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+import IntineraryForm from '../components/ItineraryForm';
 
-    this.state = {
-      test: 'Hello World',
-    };
-  }
-
-  render() {
-    const { test } = this.state;
-
-    return <div>{test}</div>;
-  }
+function App() {
+  return <IntineraryForm />;
 }
 
 export default App;

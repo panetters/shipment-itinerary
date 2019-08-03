@@ -14,11 +14,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?/,
         include: SRC_DIR,
-        loader: 'babel-loader',
-        query: {
-          presets: ['@babel/preset-react', '@babel/preset-env'],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            babelrc: true,
+            presets: ['@babel/preset-react', '@babel/preset-env'],
+          },
         },
       },
     ],

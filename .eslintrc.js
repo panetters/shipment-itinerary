@@ -4,6 +4,7 @@ module.exports = {
     "plugin:prettier/recommended",
     "prettier/react"
   ],
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "commonjs": true,
@@ -13,6 +14,8 @@ module.exports = {
   },
   "rules": {
     "no-console": "off",
+    "import/prefer-default-export": "off",
+    "react/require-default-props": "off",
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [
