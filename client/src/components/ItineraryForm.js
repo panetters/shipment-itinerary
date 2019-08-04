@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import styled from 'styled-components';
+import { H1Text } from '../library/typography';
 import { TextInput } from '../library/inputs';
 import { PrimaryButton } from '../library/buttons';
 
@@ -11,6 +13,17 @@ import {
   attemptSubmitNewStop,
   displayToast,
 } from '../../store';
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+
+  > * {
+    :not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+`;
 
 class ItineraryForm extends React.Component {
   updateName = e => {
@@ -44,23 +57,26 @@ class ItineraryForm extends React.Component {
     const { curName, curAddr } = this.props;
 
     return (
-      <div>
-        <TextInput
-          value={curName}
-          onChange={this.updateName}
-          onKeyPress={this.keyHandler}
-          placeholder="Name"
-        />
-        <TextInput
-          value={curAddr}
-          onChange={this.updateAddress}
-          onKeyPress={this.keyHandler}
-          placeholder="Address"
-        />
-        <PrimaryButton onClick={this.submit} onKeyPress={this.keyHandler}>
-          Add Stop
-        </PrimaryButton>
-      </div>
+      <>
+        <H1Text>Add a new stop:</H1Text>
+        <FormWrapper>
+          <TextInput
+            value={curName}
+            onChange={this.updateName}
+            onKeyPress={this.keyHandler}
+            placeholder="Name"
+          />
+          <TextInput
+            value={curAddr}
+            onChange={this.updateAddress}
+            onKeyPress={this.keyHandler}
+            placeholder="Address"
+          />
+          <PrimaryButton onClick={this.submit} onKeyPress={this.keyHandler}>
+            Add Stop
+          </PrimaryButton>
+        </FormWrapper>
+      </>
     );
   }
 }

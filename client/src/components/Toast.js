@@ -4,47 +4,61 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import { MenuButton } from '../library/buttons';
+import * as colors from '../library/colors';
 
 import { hideToast, attemptSubmitNewStop } from '../../store';
 
 const ToastWrapper = styled.div`
   position: fixed;
-  width: 30%;
-  top: 10%;
-  left: 35%;
   display: flex;
   flex-flow: column nowrap;
-  background-color: green;
+  width: 30%;
+  left: 35%;
+  top: ${({ showToast }) => (showToast ? '24px' : '-24px')};
+  visibility: ${({ showToast }) => (showToast ? 'visible' : 'hidden')};
+  transition: top 1s ease-out;
+  padding: 8px;
+  background-color: ${({ isConfirm }) => (isConfirm ? colors.success : colors.error)};
+  border-radius: 8px;
+  cursor: ${({ isConfirm }) => (isConfirm ? 'default' : 'pointer')};
 `;
 
 const MessageSpan = styled.span`
-  color: blue;
+  color: ${colors.textMain};
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  margin-top: 8px;
+  justify-content: space-around;
 `;
 
 function Toast({ messages, type, curName, clearMessage, submitStop }) {
-  if (!messages.length) return null;
-
   const submit = () => {
     submitStop(curName, messages[0]);
     clearMessage();
   };
 
+  const showToast = messages.length > 0;
+  const isConfirm = type === 'confirm';
+
   return (
-    <ToastWrapper>
-      {type === 'confirm' && <MessageSpan>Did you mean:</MessageSpan>}
+    <ToastWrapper
+      showToast={showToast}
+      isConfirm={isConfirm}
+      onClick={isConfirm ? null : clearMessage}
+    >
+      {isConfirm && <MessageSpan>Did you mean:</MessageSpan>}
       {messages.map(msg => (
         <MessageSpan key={msg.slice(3)}>{msg}</MessageSpan>
       ))}
-      <ButtonWrapper>
-        <MenuButton onClick={clearMessage}>Close</MenuButton>
-        {type === 'confirm' && <MenuButton onClick={submit}>Yes</MenuButton>}
-      </ButtonWrapper>
+      {isConfirm && (
+        <ButtonWrapper>
+          <MenuButton>Close</MenuButton>
+          <MenuButton onClick={submit}>Yes</MenuButton>
+        </ButtonWrapper>
+      )}
     </ToastWrapper>
   );
 }

@@ -11,6 +11,7 @@ import randomstring from 'randomstring';
 // Constants
 const CHANGE_CURRENT_NAME = 'CHANGE_CURRENT_NAME';
 const CHANGE_CURRENT_ADDRESS = 'CHANGE_CURRENT_ADDRESS';
+const ENABLE_STOP_EDITING = 'ENABLE_STOP_EDITING';
 const UPDATE_STOP_NAME = 'UPDATE_STOP_NAME';
 const UPDATE_STOP_ADDRESS = 'UPDATE_STOP_ADDRESS';
 const ADD_STOP_TO_ITINERARY = 'ADD_STOP_TO_ITINERARY';
@@ -24,9 +25,9 @@ const initialState = {
   currentName: '',
   currentAddress: '',
   stops: [
-    { id: 13, name: 'Michael', address: '123 Main', complete: false },
-    { id: 12, name: 'Ted', address: '123 Main', complete: false },
-    { id: 12323, name: 'John', address: '123 Main', complete: false },
+    { id: 13, name: 'Michael', address: '123 Main', complete: false, edit: false },
+    { id: 12, name: 'Ted', address: '123 Main', complete: false, edit: false },
+    { id: 12323, name: 'John', address: '123 Main', complete: false, edit: false },
   ],
   toastMessages: [],
   toastType: '',
@@ -41,11 +42,14 @@ const reducer = (state = initialState, action) =>
       case CHANGE_CURRENT_ADDRESS:
         draft.currentAddress = action.address;
         return draft;
+      case ENABLE_STOP_EDITING:
+        draft.stops[action.index].edit = action.edit;
+        return draft;
       case UPDATE_STOP_NAME:
-        draft.stops[action.index] = { ...draft.stops[action.index], name: action.name };
+        draft.stops[action.index].name = action.name;
         return draft;
       case UPDATE_STOP_ADDRESS:
-        draft.stops[action.index] = { ...draft.stops[action.index], address: action.address };
+        draft.stops[action.index].address = action.address;
         return draft;
       case ADD_STOP_TO_ITINERARY:
         draft.stops.push({
@@ -58,7 +62,7 @@ const reducer = (state = initialState, action) =>
         draft.currentAddress = '';
         return draft;
       case CHECK_OFF_INTINERARY_STOP:
-        draft.stops[action.index] = { ...draft.stops[action.index], complete: action.checked };
+        draft.stops[action.index].complete = action.checked;
         return draft;
       case REMOVE_STOP_FROM_ITINERARY:
         draft.stops.splice(action.index, 1);
@@ -87,6 +91,12 @@ export const changeCurrentName = name => ({
 export const changeCurrentAddress = address => ({
   type: CHANGE_CURRENT_ADDRESS,
   address,
+});
+
+export const enableStopEditing = (edit, index) => ({
+  type: ENABLE_STOP_EDITING,
+  edit,
+  index,
 });
 
 export const updateStopName = (name, index) => ({

@@ -2,15 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import * as colors from './colors';
 
 export const TextInput = styled.input`
-  color: ${colors.textMain};
+  height: 24px;
+  width: 100%;
+  padding: 0 8px;
 `;
 
 const CheckboxContainer = styled.label`
   display: inline-block;
   vertical-align: middle;
+  cursor: pointer;
 `;
 
 const Icon = styled.svg`
