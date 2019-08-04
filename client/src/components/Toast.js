@@ -9,9 +9,11 @@ import { hideToast, attemptSubmitNewStop } from '../../store';
 
 const ToastWrapper = styled.div`
   position: fixed;
-  width: 25%;
+  width: 30%;
   top: 10%;
-  left: 25%;
+  left: 35%;
+  display: flex;
+  flex-flow: column nowrap;
   background-color: green;
 `;
 
@@ -22,42 +24,42 @@ const MessageSpan = styled.span`
 const ButtonWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
+  justify-content: space-between;
 `;
 
-function Toast({ message, confirm, curName, clearMessage, submitStop }) {
-  if (!message) return null;
+function Toast({ messages, type, curName, clearMessage, submitStop }) {
+  if (!messages.length) return null;
 
   const submit = () => {
-    submitStop(curName, message);
+    submitStop(curName, messages[0]);
+    clearMessage();
   };
 
   return (
     <ToastWrapper>
-      {confirm && <MessageSpan>Did you mean:</MessageSpan>}
-      {typeof message === 'string' ? (
-        <MessageSpan>{message}</MessageSpan>
-      ) : (
-        message.map(msg => <MessageSpan>{msg}</MessageSpan>)
-      )}
+      {type === 'confirm' && <MessageSpan>Did you mean:</MessageSpan>}
+      {messages.map(msg => (
+        <MessageSpan key={msg.slice(3)}>{msg}</MessageSpan>
+      ))}
       <ButtonWrapper>
         <MenuButton onClick={clearMessage}>Close</MenuButton>
-        {confirm && <MenuButton onClick={submit}>Yes</MenuButton>}
+        {type === 'confirm' && <MenuButton onClick={submit}>Yes</MenuButton>}
       </ButtonWrapper>
     </ToastWrapper>
   );
 }
 
 Toast.propTypes = {
-  message: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  confirm: PropTypes.bool,
+  messages: PropTypes.array,
+  type: PropTypes.string,
   curName: PropTypes.string,
   clearMessage: PropTypes.func,
   submitStop: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
-  message: state.toastMessage,
-  confirm: state.toastConfirm,
+  messages: state.toastMessages,
+  type: state.toastType,
   curName: state.currentName,
 });
 

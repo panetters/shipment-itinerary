@@ -32,9 +32,9 @@ class ItineraryForm extends React.Component {
   submit = () => {
     const { curName, curAddr, showMessage, submitStop } = this.props;
     if (!curName || !curAddr) {
-      showMessage('Please fill out both fields.');
+      showMessage(['Please fill out both fields.']);
     } else if (curAddr.length < 3) {
-      showMessage('Please enter a valid address.');
+      showMessage(['Please enter a valid address.']);
     } else {
       submitStop(curName, curAddr);
     }
