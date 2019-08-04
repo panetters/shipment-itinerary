@@ -16,8 +16,8 @@ const StopItem = styled.div`
 function ItineraryList({ stops }) {
   return (
     <StopsWrapper>
-      {stops.map(stop => (
-        <StopItem key={stop.name}>{`${stop.name} - ${stop.address}`}</StopItem>
+      {stops.map((stop, ind) => (
+        <StopItem key={stop.name}>{`${ind + 1} - ${stop.name} - ${stop.address}`}</StopItem>
       ))}
     </StopsWrapper>
   );
