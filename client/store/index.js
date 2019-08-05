@@ -14,6 +14,7 @@ const CHANGE_CURRENT_ADDRESS = 'CHANGE_CURRENT_ADDRESS';
 const ENABLE_STOP_EDITING = 'ENABLE_STOP_EDITING';
 const UPDATE_STOP_NAME = 'UPDATE_STOP_NAME';
 const UPDATE_STOP_ADDRESS = 'UPDATE_STOP_ADDRESS';
+const APPROVE_ADDRESS_UPDATE = 'APPROVE_ADDRESS_UPDATE';
 const ADD_STOP_TO_ITINERARY = 'ADD_STOP_TO_ITINERARY';
 const CHECK_OFF_INTINERARY_STOP = 'CHECK_OFF_ITINERARY_STOP';
 const REMOVE_STOP_FROM_ITINERARY = 'REMOVE_STOP_FROM_ITINERARY';
@@ -24,11 +25,7 @@ const REMOVE_TOAST_MESSAGES = 'REMOVE_TOAST_MESSAGES';
 const initialState = {
   currentName: '',
   currentAddress: '',
-  stops: [
-    { id: 13, name: 'Michael', address: '123 Main', complete: false, edit: false },
-    { id: 12, name: 'Ted', address: '123 Main', complete: false, edit: false },
-    { id: 12323, name: 'John', address: '123 Main', complete: false, edit: false },
-  ],
+  stops: [],
   toastMessages: [],
   toastType: '',
 };
@@ -60,6 +57,10 @@ const reducer = (state = initialState, action) =>
         });
         draft.currentName = '';
         draft.currentAddress = '';
+        return draft;
+      case APPROVE_ADDRESS_UPDATE:
+        draft.stops[action.index].address = action.address;
+        draft.stops[action.index].edit = false;
         return draft;
       case CHECK_OFF_INTINERARY_STOP:
         draft.stops[action.index].complete = action.checked;
@@ -116,6 +117,12 @@ const addStopToItinerary = (name, address, id) => ({
   name,
   address,
   id,
+});
+
+const approveAddressUpdate = (address, index) => ({
+  type: APPROVE_ADDRESS_UPDATE,
+  address,
+  index,
 });
 
 export const checkOffItinteraryStop = (checked, index) => ({
@@ -175,6 +182,33 @@ export const attemptSubmitNewStop = (name, address) => {
   };
 };
 
+export const revalidateStopAddress = (address, index) => {
+  return async dispatch => {
+    try {
+      const {
+        data: { geocoded_address, warnings },
+      } = await axios.post(`${baseURL}/v2/locations/addresses/validate/`, {
+        formatted_address: address,
+      });
+
+      // No warnings, add the stop to our list
+      if (warnings.length === 0) {
+        dispatch(approveAddressUpdate(address, index));
+        // If only warning is different address, show confirmation message
+      } else if (warnings.length === 1 && warnings[0].startsWith('A different address')) {
+        dispatch(approveAddressUpdate(geocoded_address.formatted_address, index));
+        // Otherwise, just show warnings
+      } else {
+        dispatch(displayToast(warnings, 'error'));
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(displayToast(['Technical Difficulties 😞'], 'error'));
+    }
+  };
+};
+
+// Store
 const store = createStore(
   reducer,
   compose(
