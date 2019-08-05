@@ -20,7 +20,7 @@ export const MenuButton = styled.div`
   font-size: 12px;
   height: 24px;
   width: 128px;
-  background-color: ${colors.accent};
+  background-color: ${colors.primary};
   border-radius: 8px;
   cursor: pointer;
 `;

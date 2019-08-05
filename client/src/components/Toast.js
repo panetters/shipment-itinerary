@@ -18,7 +18,7 @@ const ToastWrapper = styled.div`
   visibility: ${({ showToast }) => (showToast ? 'visible' : 'hidden')};
   transition: top 1s ease-out;
   padding: 8px;
-  background-color: ${({ isConfirm }) => (isConfirm ? colors.primary : colors.error)};
+  background-color: ${({ isConfirm }) => (isConfirm ? colors.accent : colors.error)};
   border-radius: 8px;
   cursor: ${({ isConfirm }) => (isConfirm ? 'default' : 'pointer')};
 `;
