@@ -10,6 +10,8 @@ export const TableRow = styled.div`
   flex-flow: row nowrap;
   width: 100%;
   margin-top: 8px;
+
+  opacity: ${({ fade }) => (fade ? 0.5 : 1)};
 `;
 
 export const TableCell = styled.div`

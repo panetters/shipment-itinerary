@@ -1,12 +1,12 @@
 // Palette
-export const background = '#B6D8E5';
-export const primary = '#55828B';
-export const accent = '#364958';
-export const highlight = '#87BBA2';
+export const background = '#fcf9ea';
+export const primary = '#49beb7';
+export const accent = '#badfdb';
+export const highlight = '#ff8a5c';
 
 // Typography
 export const textMain = '#333';
-export const testHeader = '#333';
+export const textHeader = '#49beb7';
 
 // Notification
 export const success = '#69B578';

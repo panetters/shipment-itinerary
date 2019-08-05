@@ -1,27 +1,21 @@
 import React from 'react';
 
-import { createGlobalStyle } from 'styled-components';
-import * as colors from '../library/colors';
-
+import GlobalStyle from '../library/global';
 import Toast from '../components/Toast';
+import Header from '../components/Header';
 import IntineraryForm from '../components/ItineraryForm';
 import ItineraryList from '../components/ItineraryList';
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: ${colors.background};
-    color: ${colors.textMain};
-    font-family: 'Roboto';
-  }
-`;
+import Footer from '../components/Footer';
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Toast />
+      <Header />
       <IntineraryForm />
       <ItineraryList />
+      <Footer />
     </>
   );
 }

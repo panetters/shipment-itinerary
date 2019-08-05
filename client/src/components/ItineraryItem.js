@@ -61,7 +61,7 @@ function ItineraryItem({
         </PrimaryButton>
       </TableCell>
       <TableCell size={1}>
-        <PrimaryButton onClick={editClick} full>
+        <PrimaryButton onClick={editClick} full alternate={edit}>
           {edit ? 'Save' : 'Edit'}
         </PrimaryButton>
       </TableCell>

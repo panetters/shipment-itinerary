@@ -18,13 +18,13 @@ const ToastWrapper = styled.div`
   visibility: ${({ showToast }) => (showToast ? 'visible' : 'hidden')};
   transition: top 1s ease-out;
   padding: 8px;
-  background-color: ${({ isConfirm }) => (isConfirm ? colors.success : colors.error)};
+  background-color: ${({ isConfirm }) => (isConfirm ? colors.primary : colors.error)};
   border-radius: 8px;
   cursor: ${({ isConfirm }) => (isConfirm ? 'default' : 'pointer')};
 `;
 
 const MessageSpan = styled.span`
-  color: ${colors.textMain};
+  color: ${({ isConfirm }) => (isConfirm ? colors.textMain : 'white')};
 `;
 
 const ButtonWrapper = styled.div`
@@ -49,14 +49,16 @@ function Toast({ messages, type, curName, clearMessage, submitStop }) {
       isConfirm={isConfirm}
       onClick={isConfirm ? null : clearMessage}
     >
-      {isConfirm && <MessageSpan>Did you mean:</MessageSpan>}
+      {isConfirm && <MessageSpan isConfirm={isConfirm}>Did you mean:</MessageSpan>}
       {messages.map(msg => (
-        <MessageSpan key={msg.slice(3)}>{msg}</MessageSpan>
+        <MessageSpan key={msg.slice(3)} isConfirm={isConfirm}>
+          {msg}
+        </MessageSpan>
       ))}
       {isConfirm && (
         <ButtonWrapper>
-          <MenuButton>Close</MenuButton>
-          <MenuButton onClick={submit}>Yes</MenuButton>
+          <MenuButton>Reenter Address</MenuButton>
+          <MenuButton onClick={submit}>Use This Address</MenuButton>
         </ButtonWrapper>
       )}
     </ToastWrapper>

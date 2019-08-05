@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 import ItineraryItem from './ItineraryItem';
 import { Table, TableRow, TableCell } from '../library/layout';
-import { H1Text, MainText } from '../library/typography';
+import { H2Text, MainText } from '../library/typography';
 
 function ItineraryList({ stops }) {
   return (
     <>
-      <H1Text>Itinerary</H1Text>
+      <H2Text>Itinerary:</H2Text>
       <Table>
         <TableRow>
           <TableCell size={1}>
@@ -26,7 +26,7 @@ function ItineraryList({ stops }) {
           </TableCell>
         </TableRow>
         {stops.map((stop, ind) => (
-          <TableRow key={stop.id}>
+          <TableRow key={stop.id} fade={stop.complete}>
             <ItineraryItem index={ind} stop={stop} />
           </TableRow>
         ))}

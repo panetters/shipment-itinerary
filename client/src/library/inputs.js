@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
+import * as colors from './colors';
 
 export const TextInput = styled.input`
   height: 24px;
@@ -38,7 +39,7 @@ const StyledCheckbox = styled.div`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: ${props => (props.checked ? 'salmon' : 'papayawhip')};
+  background: ${props => (props.checked ? colors.highlight : colors.accent)};
   border-radius: 3px;
   transition: all 150ms;
 

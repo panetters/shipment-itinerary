@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import { H1Text } from '../library/typography';
+import { H2Text } from '../library/typography';
 import { TextInput } from '../library/inputs';
 import { PrimaryButton } from '../library/buttons';
 
@@ -58,7 +58,7 @@ class ItineraryForm extends React.Component {
 
     return (
       <>
-        <H1Text>Add a new stop:</H1Text>
+        <H2Text>Add a new stop:</H2Text>
         <FormWrapper>
           <TextInput
             value={curName}

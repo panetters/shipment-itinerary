@@ -9,7 +9,7 @@ export const PrimaryButton = styled.div`
   height: ${({ full }) => (full ? '100%' : '')};
   width: ${({ full }) => (full ? '100%' : '64px')};
   flex-shrink: 0;
-  background-color: ${colors.primary};
+  background-color: ${({ alternate }) => (alternate ? colors.highlight : colors.primary)};
   cursor: pointer;
 `;
 
@@ -19,7 +19,7 @@ export const MenuButton = styled.div`
   align-items: center;
   font-size: 12px;
   height: 24px;
-  width: 48px;
+  width: 128px;
   background-color: ${colors.accent};
   border-radius: 8px;
   cursor: pointer;
