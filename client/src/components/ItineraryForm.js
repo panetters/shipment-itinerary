@@ -17,6 +17,7 @@ import {
 const FormWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
+  width: 75%;
 
   > * {
     :not(:last-child) {
@@ -62,12 +63,18 @@ class ItineraryForm extends React.Component {
         <FormWrapper>
           <TextInput
             value={curName}
+            type="text"
+            name="fullname"
+            autoComplete="name"
             onChange={this.updateName}
             onKeyPress={this.keyHandler}
             placeholder="Name"
           />
           <TextInput
             value={curAddr}
+            type="text"
+            name="street-address"
+            autoComplete="street-address"
             onChange={this.updateAddress}
             onKeyPress={this.keyHandler}
             placeholder="Address"

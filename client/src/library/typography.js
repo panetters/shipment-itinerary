@@ -17,3 +17,8 @@ export const H2Text = styled.h1`
 export const MainText = styled.span`
   color: ${colors.textMain};
 `;
+
+export const SmallText = styled.span`
+  color: ${colors.textMain};
+  font-size: 12px;
+`;

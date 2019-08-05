@@ -68,11 +68,22 @@ function ItineraryItem({
       </TableCell>
       <TableCell size={1}>{index + 1}</TableCell>
       <TableCell size={3}>
-        <TextInput value={name} onChange={editName} onKeyPress={keyHandler} disabled={!edit} />
+        <TextInput
+          value={name}
+          type="text"
+          name="fullname"
+          autoComplete="name"
+          onChange={editName}
+          onKeyPress={keyHandler}
+          disabled={!edit}
+        />
       </TableCell>
       <TableCell size={5}>
         <TextInput
           value={address}
+          type="text"
+          name="street-address"
+          autoComplete="street-address"
           onChange={editAddress}
           onKeyPress={keyHandler}
           disabled={!edit}

@@ -12,9 +12,10 @@ const ToastWrapper = styled.div`
   position: fixed;
   display: flex;
   flex-flow: column nowrap;
-  width: 30%;
-  left: 35%;
-  top: ${({ showToast }) => (showToast ? '24px' : '-24px')};
+  width: ${({ isConfirm }) => (isConfirm ? '30%' : '20%')};
+  left: ${({ isConfirm }) => (isConfirm ? '35%' : '40%')};
+  text-align: ${({ isConfirm }) => (isConfirm ? 'left' : 'center')};
+  top: ${({ showToast }) => (showToast ? '24px' : '-96px')};
   visibility: ${({ showToast }) => (showToast ? 'visible' : 'hidden')};
   transition: top 1s ease-out;
   padding: 8px;
@@ -57,7 +58,7 @@ function Toast({ messages, type, curName, clearMessage, submitStop }) {
       ))}
       {isConfirm && (
         <ButtonWrapper>
-          <MenuButton>Reenter Address</MenuButton>
+          <MenuButton onClick={clearMessage}>Reenter Address</MenuButton>
           <MenuButton onClick={submit}>Use This Address</MenuButton>
         </ButtonWrapper>
       )}
