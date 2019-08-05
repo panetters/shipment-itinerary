@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ItineraryItem from './ItineraryItem';
 import { Table, TableRow, TableCell } from '../library/layout';
 import { H2Text, MainText } from '../library/typography';
+import ItineraryItem from './ItineraryItem';
 
 function ItineraryList({ stops }) {
   return (

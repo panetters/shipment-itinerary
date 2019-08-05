@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { TableCell } from '../library/layout';
 import { PrimaryButton } from '../library/buttons';
 import { TextInput, Checkbox } from '../library/inputs';
-import { TableCell } from '../library/layout';
 
 import {
-  enableStopEditing,
+  toggleStopEditing,
   updateStopName,
   updateStopAddress,
   revalidateStopAddress,
@@ -106,7 +106,7 @@ ItineraryItem.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleEdit: (edit, index) => dispatch(enableStopEditing(edit, index)),
+    toggleEdit: (edit, index) => dispatch(toggleStopEditing(edit, index)),
     updateName: (name, index) => dispatch(updateStopName(name, index)),
     updateAddress: (address, index) => dispatch(updateStopAddress(address, index)),
     resubmitStop: (address, index) => dispatch(revalidateStopAddress(address, index)),

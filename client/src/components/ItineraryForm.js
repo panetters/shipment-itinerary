@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import { H2Text } from '../library/typography';
-import { TextInput } from '../library/inputs';
 import { PrimaryButton } from '../library/buttons';
+import { TextInput } from '../library/inputs';
 
 import {
   changeCurrentName,

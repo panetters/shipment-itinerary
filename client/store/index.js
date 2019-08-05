@@ -1,17 +1,20 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import produce from 'immer';
-import axios from 'axios';
 import randomstring from 'randomstring';
+
+import { addressValidation } from './services';
 
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
 /* eslint-disable no-underscore-dangle */
 
-// Constants
+/** ********************
+ *    CONSTANTS
+ ******************** */
 const CHANGE_CURRENT_NAME = 'CHANGE_CURRENT_NAME';
 const CHANGE_CURRENT_ADDRESS = 'CHANGE_CURRENT_ADDRESS';
-const ENABLE_STOP_EDITING = 'ENABLE_STOP_EDITING';
+const TOGGLE_STOP_EDITING = 'TOGGLE_STOP_EDITING';
 const UPDATE_STOP_NAME = 'UPDATE_STOP_NAME';
 const UPDATE_STOP_ADDRESS = 'UPDATE_STOP_ADDRESS';
 const APPROVE_ADDRESS_UPDATE = 'APPROVE_ADDRESS_UPDATE';
@@ -21,7 +24,9 @@ const REMOVE_STOP_FROM_ITINERARY = 'REMOVE_STOP_FROM_ITINERARY';
 const ADD_TOAST_MESSAGES = 'ADD_TOAST_MESSAGES';
 const REMOVE_TOAST_MESSAGES = 'REMOVE_TOAST_MESSAGES';
 
-// Reducer
+/** ********************
+ *    REDUCER
+ ******************** */
 const initialState = {
   currentName: '',
   currentAddress: '',
@@ -39,7 +44,7 @@ const reducer = (state = initialState, action) =>
       case CHANGE_CURRENT_ADDRESS:
         draft.currentAddress = action.address;
         return draft;
-      case ENABLE_STOP_EDITING:
+      case TOGGLE_STOP_EDITING:
         draft.stops[action.index].edit = action.edit;
         return draft;
       case UPDATE_STOP_NAME:
@@ -81,9 +86,9 @@ const reducer = (state = initialState, action) =>
     }
   });
 
-const baseURL = 'https://dev-api.shipwell.com';
-
-// Actions
+/** ********************
+ *    ACTIONS
+ ******************** */
 export const changeCurrentName = name => ({
   type: CHANGE_CURRENT_NAME,
   name,
@@ -94,8 +99,8 @@ export const changeCurrentAddress = address => ({
   address,
 });
 
-export const enableStopEditing = (edit, index) => ({
-  type: ENABLE_STOP_EDITING,
+export const toggleStopEditing = (edit, index) => ({
+  type: TOGGLE_STOP_EDITING,
   edit,
   index,
 });
@@ -146,7 +151,9 @@ export const hideToast = () => ({
   type: REMOVE_TOAST_MESSAGES,
 });
 
-// Thunks
+/** ********************
+ *    THUNKS
+ ******************** */
 export const displayToast = (msg, type) => {
   return dispatch => {
     // Show toast and add timer to autohide depending on confirmation or not
@@ -159,10 +166,8 @@ export const attemptSubmitNewStop = (name, address) => {
   return async dispatch => {
     try {
       const {
-        data: { geocoded_address, warnings },
-      } = await axios.post(`${baseURL}/v2/locations/addresses/validate/`, {
-        formatted_address: address,
-      });
+        data: { geocoded_address = '', warnings = [] },
+      } = await addressValidation(address);
 
       // No warnings, add the stop to our list
       if (warnings.length === 0) {
@@ -176,8 +181,8 @@ export const attemptSubmitNewStop = (name, address) => {
         dispatch(displayToast(warnings, 'error'));
       }
     } catch (err) {
-      console.log(err);
-      dispatch(displayToast(['Technical Difficulties 😞'], 'error'));
+      console.log('Error in request: ', err);
+      dispatch(displayToast(['Technical Difficulties 😞 Please Try Again'], 'error'));
     }
   };
 };
@@ -186,15 +191,13 @@ export const revalidateStopAddress = (address, index) => {
   return async dispatch => {
     try {
       const {
-        data: { geocoded_address, warnings },
-      } = await axios.post(`${baseURL}/v2/locations/addresses/validate/`, {
-        formatted_address: address,
-      });
+        data: { geocoded_address = '', warnings = [] },
+      } = await addressValidation(address);
 
-      // No warnings, add the stop to our list
+      // No warnings, approve the update
       if (warnings.length === 0) {
         dispatch(approveAddressUpdate(address, index));
-        // If only warning is different address, show confirmation message
+        // If only warning is different address, assume that address
       } else if (warnings.length === 1 && warnings[0].startsWith('A different address')) {
         dispatch(approveAddressUpdate(geocoded_address.formatted_address, index));
         // Otherwise, just show warnings
@@ -203,12 +206,14 @@ export const revalidateStopAddress = (address, index) => {
       }
     } catch (err) {
       console.log(err);
-      dispatch(displayToast(['Technical Difficulties 😞'], 'error'));
+      dispatch(displayToast(['Technical Difficulties 😞 Please Try Again'], 'error'));
     }
   };
 };
 
-// Store
+/** ********************
+ *    STORE
+ ******************** */
 const store = createStore(
   reducer,
   compose(

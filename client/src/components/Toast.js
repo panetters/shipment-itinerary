@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
-import { MenuButton } from '../library/buttons';
 import * as colors from '../library/colors';
+import { MenuButton } from '../library/buttons';
 
 import { hideToast, attemptSubmitNewStop } from '../../store';
 
